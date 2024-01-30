@@ -103,8 +103,8 @@ void retro_set_environment(retro_environment_t in_environment)
 	{
 		{ "daphne_invertctrl",		"Invert controls (if supported); enable|disable" },
 		{ "daphne_useoverlaysb",	"Overlay scoreboard (if supported); enable|disable" },
-		{ "daphne_emulate_seek",	"Emulate LaserDisc seeks; enable|disable" },
-		{ "daphne_cheat",			"Supported Cheats; disable|enable" },
+		{ "daphne_emulate_seek",	"Emulate LaserDisc seeks; disable|enable" },
+		{ "daphne_cheat",			"Supported Cheats; enable|disable" },
 		{ NULL, NULL }
 	};
 
@@ -274,7 +274,7 @@ unsigned int retro_api_version(void)
 void retro_get_system_info(struct retro_system_info *out_systeminfo)
 {
 	memset(out_systeminfo, 0, sizeof(*out_systeminfo));
-    out_systeminfo->library_name		= "Daphne";
+    out_systeminfo->library_name		= "Daphne Xtreme";
 #ifndef GIT_VERSION
 #define GIT_VERSION ""
 #endif
@@ -372,6 +372,9 @@ int retro_run_frames	= 0;
 
 bool retro_run_once = false;
 
+const int naudioframe = 44100 / 60;
+int16_t audio_buffer[naudioframe + naudioframe];
+
 void retro_run(void)
 {
 	if (retro_run_frames_delta >= RETRO_RUN_FRAMES_PAUSED_THRESHOLD)
@@ -415,6 +418,11 @@ void retro_run(void)
 		}
 		// float analogX = (float)input_state_cb(n_port, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_LEFT, RETRO_DEVICE_ID_ANALOG_X) / 32768.0f;
 	}
+
+       // FIXME
+       audio_callback(NULL, (uint8_t *)audio_buffer, naudioframe * 4);
+       if (audio_batch_cb)
+               audio_batch_cb(audio_buffer, naudioframe);
 
 #if 0
 	int ab_ndx = -1;
