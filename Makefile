@@ -44,7 +44,7 @@ else ifneq ($(findstring Darwin,$(shell uname -a)),)
 	system_platform = win
 endif
 
-TARGET_NAME = daphne
+TARGET_NAME = km_daphne_xtreme
 
 CORE_DIR := .
 
