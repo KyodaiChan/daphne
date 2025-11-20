@@ -4,7 +4,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 # Project name
-project(KM_Daphne_Xtreme)
+project(daphne)
 
 # Default platform variable if not set
 
